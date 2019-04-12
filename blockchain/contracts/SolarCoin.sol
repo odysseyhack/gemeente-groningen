@@ -8,7 +8,6 @@ contract SolarCoin {
   struct userStatistics {
     uint generated;
     uint consumed;
-    bool exists;
   }
 
   mapping (address => uint) balances;
@@ -18,21 +17,11 @@ contract SolarCoin {
     owner = msg.sender;
   }
 
-  modifier isRegistered() {
-    require(stats[msg.sender].exists);
-    _;
-  }
-
-  function register() external {
-    balances[msg.sender] = 0;
-    stats[msg.sender] = userStatistics(0, 0, true);
-  }
-
-  function report(uint _generated, uint _consumed) external isRegistered returns(uint amount){
+  function report(uint _generated, uint _consumed) external returns(uint amount){
     totalGenerated -= stats[msg.sender].generated;
     totalConsumed -= stats[msg.sender].consumed;
 
-    stats[msg.sender] = userStatistics(_generated, _consumed, true);
+    stats[msg.sender] = userStatistics(_generated, _consumed);
 
     totalGenerated += _generated;
     totalConsumed += _consumed;
@@ -41,7 +30,7 @@ contract SolarCoin {
     return 100;
   }
 
-  function sendCoin(address receiver, uint amount) public isRegistered returns(bool sufficient) {
+  function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
     if (balances[msg.sender] < amount) return false;
     balances[msg.sender] -= amount;
     balances[receiver] += amount;
@@ -60,7 +49,7 @@ contract SolarCoin {
   /*   return balances[addr]; */
   /* } */
 
-  function getMyBalance() public view isRegistered returns(uint) {
+  function getMyBalance() public view returns(uint) {
     return balances[msg.sender];
   }
 }

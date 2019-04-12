@@ -12,4 +12,4 @@ then
     (cd blockchain ; truffle migrate --reset)
 fi
 echo "Starting Client"
-# (cd client ; npm start &)
+(cd client ; npm start)
