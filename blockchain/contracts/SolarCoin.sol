@@ -26,8 +26,8 @@ contract SolarCoin {
     totalGenerated += generated;
     totalConsumed += consumed;
 
-    balances[msg.sender]++;
-    return 1;
+    balances[msg.sender] += 100;
+    return 100;
   }
 
   function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
@@ -45,7 +45,11 @@ contract SolarCoin {
     return totalGenerated;
   }
 
-  function getBalance(address addr) public view returns(uint) {
-    return balances[addr];
+  /* function getBalance(address addr) public view returns(uint) { */
+  /*   return balances[addr]; */
+  /* } */
+
+  function getMyBalance() public view returns(uint) {
+    return balances[msg.sender];
   }
 }
