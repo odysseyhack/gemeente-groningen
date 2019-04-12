@@ -2,6 +2,8 @@ pragma solidity >=0.4.25 <0.6.0;
 
 contract SolarCoin {
   address owner;
+  uint totalGenerated;
+  uint totalConsumed;
 
   struct userStatistics {
     uint generated;
@@ -16,7 +18,15 @@ contract SolarCoin {
   }
 
   function report(uint generated, uint consumed) external returns(uint amount){
+    totalGenerated -= stats[msg.sender].generated;
+    totalConsumed -= stats[msg.sender].consumed;
+
     stats[msg.sender] = userStatistics(generated, consumed);
+
+    totalGenerated += generated;
+    totalConsumed += consumed;
+
+    balances[msg.sender]++;
     return 1;
   }
 
@@ -25,6 +35,14 @@ contract SolarCoin {
     balances[msg.sender] -= amount;
     balances[receiver] += amount;
     return true;
+  }
+
+  function getTotalConsumed() public view returns(uint) {
+    return totalConsumed;
+  }
+
+  function getTotalGenerated() public view returns(uint) {
+    return totalGenerated;
   }
 
   function getBalance(address addr) public view returns(uint) {
