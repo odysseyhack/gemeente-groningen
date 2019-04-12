@@ -2,22 +2,14 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import Badge from '@material-ui/core/Badge';
+import { CssBaseline, Drawer, AppBar, Toolbar, List, Divider, Typography,
+  IconButton, Badge, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItem from '@material-ui/core/ListItem';
+import Store from '@material-ui/icons/Store'
+import ReadString from "./ReadString";
 
 import SimpleLineChart from './SimpleLineChart';
 
@@ -108,13 +100,35 @@ const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
+    <ListItem button>
+      <ListItemIcon>
+        <Store />
+      </ListItemIcon>
+      <ListItemText primary="Store" />
+    </ListItem>
   </div>
 );
 
 class Dashboard extends React.Component {
   state = {
     open: false,
+    loading: true,
+    drizzleState: null,
   };
+
+  componentDidMount() {
+    const { drizzle } = this.props;
+    this.unsubscribe = drizzle.store.subscribe(() => {
+      const drizzleState = drizzle.store.getState();
+      if (drizzleState.drizzleStatus.initialized) {
+        this.setState({ loading: false, drizzleState });
+      }
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  }
 
   handleDrawerOpen = () => {
     this.setState({ open: true });
@@ -125,8 +139,8 @@ class Dashboard extends React.Component {
   };
 
   render() {
-    const { classes } = this.props;
-    const { open } = this.state;
+    const { classes, drizzle } = this.props;
+    const { open, loading, drizzleState } = this.state;
 
     return (
       <div className={classes.root}>
@@ -189,6 +203,12 @@ class Dashboard extends React.Component {
           <Typography variant="h4" gutterBottom component="h2">
             Placeholder
           </Typography>
+          {!loading && <div className="App">
+          <ReadString
+            drizzle={drizzle}
+            drizzleState={drizzleState}
+          />
+        </div>}
         </main>
       </div>
     );
