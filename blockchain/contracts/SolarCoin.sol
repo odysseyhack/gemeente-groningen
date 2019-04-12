@@ -8,6 +8,7 @@ contract SolarCoin {
   struct userStatistics {
     uint generated;
     uint consumed;
+    bool exists;
   }
 
   mapping (address => uint) balances;
@@ -18,20 +19,20 @@ contract SolarCoin {
   }
 
   modifier isRegistered() {
-    require(stats[address].exists);
+    require(stats[msg.sender].exists);
     _;
   }
 
   function register() external {
     balances[msg.sender] = 0;
-    stats[msg.sender] = userStatistics(0, 0);
+    stats[msg.sender] = userStatistics(0, 0, true);
   }
 
   function report(uint _generated, uint _consumed) external isRegistered returns(uint amount){
     totalGenerated -= stats[msg.sender].generated;
     totalConsumed -= stats[msg.sender].consumed;
 
-    stats[msg.sender] = userStatistics(_generated, _consumed);
+    stats[msg.sender] = userStatistics(_generated, _consumed, true);
 
     totalGenerated += _generated;
     totalConsumed += _consumed;
