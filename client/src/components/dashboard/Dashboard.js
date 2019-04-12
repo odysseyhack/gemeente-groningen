@@ -17,10 +17,10 @@ export default class Dashboard extends React.Component {
         <Typography variant="h4" gutterBottom component="h2">
           Placeholder
         </Typography>
-          <ReadString
-            drizzle={drizzle}
-            drizzleState={drizzleState}
-          />
+        <ReadString
+          drizzle={drizzle}
+          drizzleState={drizzleState}
+        />
       </div>
     )
   }
