@@ -11,17 +11,18 @@ contract SolarCoin {
   }
 
   mapping (address => uint) balances;
-  mapping (address => userStatistics) stats;
+  mapping (address => userStatistics[]) stats;
 
   constructor() public {
     owner = msg.sender;
   }
 
   function report(uint _generated, uint _consumed) external returns(uint amount){
-    totalGenerated -= stats[msg.sender].generated;
-    totalConsumed -= stats[msg.sender].consumed;
+    uint length = stats[msg.sender].length;
+    totalGenerated -= stats[msg.sender][length - 1].generated;
+    totalConsumed -= stats[msg.sender][length - 1].consumed;
 
-    stats[msg.sender] = userStatistics(_generated, _consumed);
+    stats[msg.sender][length] = userStatistics(_generated, _consumed);
 
     totalGenerated += _generated;
     totalConsumed += _consumed;
@@ -45,9 +46,13 @@ contract SolarCoin {
     return totalGenerated;
   }
 
-  /* function getBalance(address addr) public view returns(uint) { */
-  /*   return balances[addr]; */
-  /* } */
+  function getCurrentGenerated() public view returns(uint) {
+    return stats[msg.sender][stats[msg.sender].length - 1].generated;
+  }
+
+  function getCurrentConsumed() public view returns(uint) {
+    return stats[msg.sender][stats[msg.sender].length - 1].consumed;
+  }
 
   function getMyBalance() public view returns(uint) {
     return balances[msg.sender];
