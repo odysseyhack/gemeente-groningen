@@ -2,8 +2,8 @@ pragma solidity >=0.4.25 <0.6.0;
 
 contract SolarCoin {
   address owner;
-  uint totalGenerated;
-  uint totalConsumed;
+  uint totalGenerated = 0;
+  uint totalConsumed = 0;
 
   struct userStatistics {
     uint generated;
