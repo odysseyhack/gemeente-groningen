@@ -14,5 +14,5 @@ contract('SolarCoin', async accounts => {
         await instance.register.call();
         let balance = await instance.getMyBalance.call();
         assert.equal(balance.toNumber(), 0);
-    })
+    });
 });

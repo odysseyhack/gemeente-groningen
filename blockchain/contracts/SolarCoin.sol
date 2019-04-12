@@ -17,12 +17,17 @@ contract SolarCoin {
     owner = msg.sender;
   }
 
+  modifier isRegistered() {
+    require(stats[address].exists);
+    _;
+  }
+
   function register() external {
     balances[msg.sender] = 0;
     stats[msg.sender] = userStatistics(0, 0);
   }
 
-  function report(uint _generated, uint _consumed) external returns(uint amount){
+  function report(uint _generated, uint _consumed) external isRegistered returns(uint amount){
     totalGenerated -= stats[msg.sender].generated;
     totalConsumed -= stats[msg.sender].consumed;
 
@@ -35,7 +40,7 @@ contract SolarCoin {
     return 100;
   }
 
-  function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
+  function sendCoin(address receiver, uint amount) public isRegistered returns(bool sufficient) {
     if (balances[msg.sender] < amount) return false;
     balances[msg.sender] -= amount;
     balances[receiver] += amount;
@@ -54,7 +59,7 @@ contract SolarCoin {
   /*   return balances[addr]; */
   /* } */
 
-  function getMyBalance() public view returns(uint) {
+  function getMyBalance() public view isRegistered returns(uint) {
     return balances[msg.sender];
   }
 }
