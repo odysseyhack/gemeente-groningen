@@ -5,13 +5,13 @@ import { withStyles } from '@material-ui/core/styles';
 import { CssBaseline, Drawer, AppBar, Toolbar, List, Divider, Typography,
   IconButton, Badge, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import Store from '@material-ui/icons/Store'
-import ReadString from "./ReadString";
-
-import SimpleLineChart from './SimpleLineChart';
+import Store from '@material-ui/icons/Store';
+import Shop from './shop/Shop';
+import Dashboard from './dashboard/Dashboard';
 
 const drawerWidth = 240;
 
@@ -94,13 +94,13 @@ const styles = theme => ({
 
 const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component={Link} to='/'>
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component={Link} to='/store'>
       <ListItemIcon>
         <Store />
       </ListItemIcon>
@@ -109,7 +109,7 @@ const mainListItems = (
   </div>
 );
 
-class Dashboard extends React.Component {
+class App extends React.Component {
   state = {
     open: false,
     loading: true,
@@ -138,85 +138,89 @@ class Dashboard extends React.Component {
     this.setState({ open: false });
   };
 
+  dashboard = (classes, drizzleState, drizzle) => (
+    <Dashboard
+      classes={classes}
+      drizzleState={drizzleState}
+      drizzle={drizzle}
+    />
+  );
+
+  store = () => (
+    <Shop />
+  );
+
   render() {
     const { classes, drizzle } = this.props;
-    const { open, loading, drizzleState } = this.state;
+    const { open, drizzleState } = this.state;
 
     return (
-      <div className={classes.root}>
-        <CssBaseline />
-        <AppBar
-          position="absolute"
-          className={classNames(classes.appBar, open && classes.appBarShift)}
-        >
-          <Toolbar disableGutters={!open} className={classes.toolbar}>
-            <IconButton
-              color="inherit"
-              aria-label="Open drawer"
-              onClick={this.handleDrawerOpen}
-              className={classNames(
-                classes.menuButton,
-                open && classes.menuButtonHidden,
-              )}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Typography
-              component="h1"
-              variant="h6"
-              color="inherit"
-              noWrap
-              className={classes.title}
-            >
-              Dashboard
-            </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={0} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
-          </Toolbar>
-        </AppBar>
-        <Drawer
-          variant="permanent"
-          classes={{
-            paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
-          }}
-          open={open}
-        >
-          <div className={classes.toolbarIcon}>
-            <IconButton onClick={this.handleDrawerClose}>
-              <ChevronLeftIcon />
-            </IconButton>
-          </div>
-          <Divider />
-          <List>{mainListItems}</List>
-        </Drawer>
-        <main className={classes.content}>
-          <div className={classes.appBarSpacer} />
-          <Typography variant="h4" gutterBottom component="h2">
-            Energy consumption/production
-          </Typography>
-          <Typography component="div" className={classes.chartContainer}>
-            <SimpleLineChart />
-          </Typography>
-          <Typography variant="h4" gutterBottom component="h2">
-            Placeholder
-          </Typography>
-          {!loading && <div className="App">
-          <ReadString
-            drizzle={drizzle}
-            drizzleState={drizzleState}
-          />
-        </div>}
-        </main>
-      </div>
+      <Router>
+        <div className={classes.root}>
+          <CssBaseline />
+          <AppBar
+            position="absolute"
+            className={classNames(classes.appBar, open && classes.appBarShift)}
+          >
+            <Toolbar disableGutters={!open} className={classes.toolbar}>
+              <IconButton
+                color="inherit"
+                aria-label="Open drawer"
+                onClick={this.handleDrawerOpen}
+                className={classNames(
+                  classes.menuButton,
+                  open && classes.menuButtonHidden,
+                )}
+              >
+                <MenuIcon />
+              </IconButton>
+              <Typography
+                component="h1"
+                variant="h6"
+                color="inherit"
+                noWrap
+                className={classes.title}
+              >
+                Dashboard
+              </Typography>
+              <IconButton color="inherit">
+                <Badge badgeContent={0} color="secondary">
+                  <NotificationsIcon />
+                </Badge>
+              </IconButton>
+            </Toolbar>
+          </AppBar>
+          <Drawer
+            variant="permanent"
+            classes={{
+              paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
+            }}
+            open={open}
+          >
+            <div className={classes.toolbarIcon}>
+              <IconButton onClick={this.handleDrawerClose}>
+                <ChevronLeftIcon />
+              </IconButton>
+            </div>
+            <Divider />
+            <List>{mainListItems}</List>
+          </Drawer>
+          <main className={classes.content}>
+            <div className={classes.appBarSpacer} />
+            {/*{<Route exact path="/" component={*/}
+            {/*  () => this.dashboard(classes, drizzleState, drizzle)*/}
+            {/*}*/}
+            />}
+            <Route exact path="/shop" component={() => this.shop} />
+          </main>
+        </div>
+      </Router>
     );
   }
 }
 
-Dashboard.propTypes = {
+App.propTypes = {
   classes: PropTypes.shape({ root: PropTypes.string }).isRequired,
 };
 
-export default withStyles(styles)(Dashboard);
+export default withStyles(styles)(App);

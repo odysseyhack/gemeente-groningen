@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Drizzle } from 'drizzle';
 import './index.css';
-import Dashboard from './components/Dashboard';
+import Dashboard from './components/App';
 import SolarCoin from './contracts/SolarCoin.json';
 
 const options = {
