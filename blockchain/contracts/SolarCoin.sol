@@ -17,14 +17,19 @@ contract SolarCoin {
     owner = msg.sender;
   }
 
-  function report(uint generated, uint consumed) external returns(uint amount){
+  function register() external {
+    balances[msg.sender] = 0;
+    stats[msg.sender] = userStatistics(0, 0);
+  }
+
+  function report(uint _generated, uint _consumed) external returns(uint amount){
     totalGenerated -= stats[msg.sender].generated;
     totalConsumed -= stats[msg.sender].consumed;
 
-    stats[msg.sender] = userStatistics(generated, consumed);
+    stats[msg.sender] = userStatistics(_generated, _consumed);
 
-    totalGenerated += generated;
-    totalConsumed += consumed;
+    totalGenerated += _generated;
+    totalConsumed += _consumed;
 
     balances[msg.sender] += 100;
     return 100;
