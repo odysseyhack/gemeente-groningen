@@ -10,10 +10,12 @@ const loop = (accounts, instance, callback) => {
     setTimeout(callback, 96*TICK*1000);
     for(let i = 0; i < 96; i += 1) {
         setTimeout(() => {
-            console.log(`Data ${data[i]}`);
             accounts.forEach((account) => {
                 instance.report(parseInt(data[i], 10), 100, {from: account});
             });
+            instance.getMyBalance.call().then((res) => {
+                console.log(`Generated: ${data[i]} Consumed: 100, Earned: ${res.toNumber()}`);
+            })
         }, (i + 1)*TICK*1000);
     }
 };
