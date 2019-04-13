@@ -14,7 +14,7 @@ module.exports = async (callback) => {
     console.log(accounts);
     let instance = await SolarCoin.deployed();
     loop(accounts, instance, async () => {
-        let balance = await instance.getMyBalance.call({from: accounts[2]});
+        let balance = await instance.getMyBalance.call({from: accounts[0]});
         console.log(balance.toNumber());
     });
 }

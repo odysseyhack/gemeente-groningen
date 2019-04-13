@@ -23,19 +23,19 @@ contract SolarCoin {
   }
 
   function update(address _user, uint _generated, uint _consumed) private returns(uint amount) {
-    uint length = stats[user].length;
+    uint length = stats[_user].length;
 
     if (length > 0) {
-      totalGenerated -= stats[user][length - 1].generated;
-      totalConsumed -= stats[user][length - 1].consumed;
+      totalGenerated -= stats[_user][length - 1].generated;
+      totalConsumed -= stats[_user][length - 1].consumed;
     }
 
-    stats[user].push(userStatistics(_generated, _consumed));
+    stats[_user].push(userStatistics(_generated, _consumed));
 
     totalGenerated += _generated;
     totalConsumed += _consumed;
 
-    balances[user] += 100;
+    balances[_user] += 100;
     return 100;
   }
 
