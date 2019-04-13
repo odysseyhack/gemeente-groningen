@@ -2,15 +2,8 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import { CssBaseline, Drawer, AppBar, Toolbar, List, Divider, Typography,
-    IconButton, Badge, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import DashboardIcon from '@material-ui/icons/Dashboard';
+import { CssBaseline, AppBar, Toolbar, Typography }  from '@material-ui/core';
 import { ReactComponent as Logo } from '../Logo.svg'
-import Store from '@material-ui/icons/Store';
 import Dashboard from "./dashboard/Dashboard";
 
 const drawerWidth = 240;
@@ -92,34 +85,10 @@ const styles = theme => ({
     },
 });
 
-const mainListItems = (
-    <div>
-        <ListItem button component={Link} to='/'>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItem>
-        <ListItem button component={Link} to='/store'>
-            <ListItemIcon>
-                <Store />
-            </ListItemIcon>
-            <ListItemText primary="Store" />
-        </ListItem>
-    </div>
-);
 
 class App extends React.Component {
     state = {
         open: false,
-    };
-
-    handleDrawerOpen = () => {
-        this.setState({ open: true });
-    };
-
-    handleDrawerClose = () => {
-        this.setState({ open: false });
     };
 
     render() {
@@ -127,67 +96,30 @@ class App extends React.Component {
         const { open} = this.state;
 
         return (
-            <Router>
-                <div className={classes.root}>
-                    <CssBaseline />
-                    <AppBar
-                        position="absolute"
-                        className={classNames(classes.appBar, open && classes.appBarShift)}>
-                        <Toolbar disableGutters={!open} className={classes.toolbar}>
-                            <IconButton
-                                color="inherit"
-                                aria-label="Open drawer"
-                                onClick={this.handleDrawerOpen}
-                                className={classNames(
-                                    classes.menuButton,
-                                    open && classes.menuButtonHidden,
-                                )}
-                            >
-                                <MenuIcon />
-                            </IconButton>
-                            <Logo height='5em' width='5em'/>
-                            <Typography
-                                component="h1"
-                                variant="h6"
-                                color="inherit"
-                                noWrap
-                                className={classes.title}
-                            >
-                            </Typography>
-                            <IconButton color="inherit">
-                                <Badge badgeContent={0} color="secondary">
-                                    <NotificationsIcon />
-                                </Badge>
-                            </IconButton>
-                        </Toolbar>
-                    </AppBar>
-                    <Drawer
-                        variant="permanent"
-                        classes={{
-                            paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
-                        }}
-                        open={open}
-                    >
-                        <div className={classes.toolbarIcon}>
-                            <IconButton onClick={this.handleDrawerClose}>
-                                <ChevronLeftIcon />
-                            </IconButton>
-                        </div>
-                        <Divider />
-                        <List>{mainListItems}</List>
-                    </Drawer>
-                    <main className={classes.content}>
-                        <div className={classes.appBarSpacer} />
-                        <Route
-                            exact path='/'
-                            render={() =>
-                                <Dashboard
-                                    classes={classes}
-                                />}
-                        />
-                    </main>
-                </div>
-            </Router>
+            <div className={classes.root}>
+                <CssBaseline />
+                <AppBar
+                    position="absolute"
+                    className={classNames(classes.appBar)}>
+                    <Toolbar disableGutters={!open} className={classes.toolbar} style={{padding:2}}>
+                        <Logo height='5em' width='5em'/>
+                        <Typography
+                            component="h1"
+                            variant="h6"
+                            color="inherit"
+                            noWrap
+                            className={classes.title}
+                        >
+                        </Typography>
+                    </Toolbar>
+                </AppBar>
+                <main className={classes.content}>
+                    <div className={classes.appBarSpacer} />
+                    <Dashboard
+                        classes={classes}
+                    />
+                </main>
+            </div>
         );
     }
 }

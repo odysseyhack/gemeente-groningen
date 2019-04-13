@@ -2,9 +2,8 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import Divider from '@material-ui/core/Divider';
-import { DrizzleContext } from "drizzle-react";
-import ReadData from './ReadData';
 import DataGraph from './DataGraph';
+import Button from "@material-ui/core/Button";
 
 export default function Dashboard() {
     return (
@@ -26,23 +25,18 @@ export default function Dashboard() {
                     justify='space-evenly'
                     alignItems='center'
                 >
-                    <Grid item xs={4}>
+                    <Grid item xs={5}>
                         <Paper style={{padding: 10, width: 'auto', textAlign: 'center'}}>
+                            <Button variant='contained' color='primary'>
+                                Start
+                            </Button>
                         </Paper>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={5}>
                         <Paper style={{padding: 10, width: 'auto', textAlign: 'center'}}>
-                            <DrizzleContext.Consumer>
-                                {drizzleContext => {
-                                    const { drizzle, drizzleState, initialized } = drizzleContext;
-                                    if (!initialized) {
-                                        return "Loading...";
-                                    }
-                                    return (
-                                        <ReadData drizzle={drizzle} drizzleState={drizzleState} />
-                                    );
-                                }}
-                            </DrizzleContext.Consumer>
+                            <Button variant='contained' color='primary'>
+                                Start Washing
+                            </Button>
                         </Paper>
                     </Grid>
                 </Grid>

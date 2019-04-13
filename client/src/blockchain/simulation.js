@@ -1,6 +1,6 @@
 const SolarCoin = artifacts.require('SolarCoin');
 const fs = require('fs');
-const TICK = 0.25;
+const TICK = 2.5;
 
 const production = JSON.parse(fs.readFileSync('production.json'));
 const consumption = JSON.parse(fs.readFileSync('consumption.json'));
