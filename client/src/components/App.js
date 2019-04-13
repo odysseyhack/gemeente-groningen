@@ -11,6 +11,7 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import Store from '@material-ui/icons/Store';
 import Shop from './shop/Shop';
+import { ReactComponent as Logo } from './Logo.svg'
 import Dashboard from './dashboard/Dashboard';
 
 const drawerWidth = 240;
@@ -138,7 +139,6 @@ class App extends React.Component {
     this.setState({ open: false });
   };
 
-
   render() {
     const { classes, drizzle } = this.props;
     const { open, drizzleState, loading } = this.state;
@@ -162,6 +162,7 @@ class App extends React.Component {
               >
                 <MenuIcon />
               </IconButton>
+              <Logo height='5em' width='5em'/>
               <Typography
                 component="h1"
                 variant="h6"
@@ -169,7 +170,6 @@ class App extends React.Component {
                 noWrap
                 className={classes.title}
               >
-                Dashboard
               </Typography>
               <IconButton color="inherit">
                 <Badge badgeContent={0} color="secondary">
@@ -195,10 +195,15 @@ class App extends React.Component {
           </Drawer>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-          {!loading &&
-          <Route
-            exact path='/'
-            render={() => <Dashboard drizzle={drizzle} drizzleState={drizzleState} classes={classes}/>}
+            {!loading &&
+            <Route
+              exact path='/'
+              render={() =>
+                <Dashboard
+                  drizzle={drizzle}
+                  drizzleState={drizzleState}
+                  classes={classes}
+                />}
             />}
             <Route path="/shop" component={() => <Shop/>} />
           </main>

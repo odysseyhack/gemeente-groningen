@@ -18,7 +18,7 @@ const data = [
   { name: 'Sun', Consumption: 4490, Production: 4300 },
 ];
 
-function SimpleLineChart() {
+function DataGraph() {
   return (
     <ResponsiveContainer width="99%" height={320}>
       <LineChart data={data}>
@@ -34,4 +34,4 @@ function SimpleLineChart() {
   );
 }
 
-export default SimpleLineChart;
+export default DataGraph;

@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import { Drizzle } from 'drizzle';
 import './index.css';
 import Dashboard from './components/App';
-import SolarCoin from './contracts/SolarCoin.json';
+import SolarCoin from './blockchain/build/contracts/SolarCoin.json'
 
 const options = {
   contracts: [SolarCoin],
