@@ -17,12 +17,15 @@ contract SolarCoin {
     owner = msg.sender;
   }
 
-  function report(uint _generated, uint _consumed) external returns(uint amount){
+  function report(uint _generated, uint _consumed) public returns(uint amount){
     uint length = stats[msg.sender].length;
-    totalGenerated -= stats[msg.sender][length - 1].generated;
-    totalConsumed -= stats[msg.sender][length - 1].consumed;
 
-    stats[msg.sender][length] = userStatistics(_generated, _consumed);
+    if (length > 0) {
+      totalGenerated -= stats[msg.sender][length - 1].generated;
+      totalConsumed -= stats[msg.sender][length - 1].consumed;
+    }
+
+    stats[msg.sender].push(userStatistics(_generated, _consumed));
 
     totalGenerated += _generated;
     totalConsumed += _consumed;
@@ -56,5 +59,9 @@ contract SolarCoin {
 
   function getMyBalance() public view returns(uint) {
     return balances[msg.sender];
+  }
+
+  function getArrayLength() public view returns(uint) {
+    return stats[msg.sender].length;
   }
 }
