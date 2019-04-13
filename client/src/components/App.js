@@ -112,8 +112,8 @@ const mainListItems = (
 class App extends React.Component {
   state = {
     open: false,
-    loading: true,
     drizzleState: null,
+    loading: true,
   };
 
   componentDidMount() {
@@ -138,21 +138,10 @@ class App extends React.Component {
     this.setState({ open: false });
   };
 
-  dashboard = (classes, drizzleState, drizzle) => (
-    <Dashboard
-      classes={classes}
-      drizzleState={drizzleState}
-      drizzle={drizzle}
-    />
-  );
-
-  store = () => (
-    <Shop />
-  );
 
   render() {
     const { classes, drizzle } = this.props;
-    const { open, drizzleState } = this.state;
+    const { open, drizzleState, loading } = this.state;
 
     return (
       <Router>
@@ -160,8 +149,7 @@ class App extends React.Component {
           <CssBaseline />
           <AppBar
             position="absolute"
-            className={classNames(classes.appBar, open && classes.appBarShift)}
-          >
+            className={classNames(classes.appBar, open && classes.appBarShift)}>
             <Toolbar disableGutters={!open} className={classes.toolbar}>
               <IconButton
                 color="inherit"
@@ -207,11 +195,12 @@ class App extends React.Component {
           </Drawer>
           <main className={classes.content}>
             <div className={classes.appBarSpacer} />
-            {/*{<Route exact path="/" component={*/}
-            {/*  () => this.dashboard(classes, drizzleState, drizzle)*/}
-            {/*}*/}
+          {!loading &&
+          <Route
+            exact path='/'
+            render={() => <Dashboard drizzle={drizzle} drizzleState={drizzleState} classes={classes}/>}
             />}
-            <Route exact path="/shop" component={() => this.shop} />
+            <Route path="/shop" component={() => <Shop/>} />
           </main>
         </div>
       </Router>
