@@ -1,7 +1,7 @@
 const SolarCoin = artifacts.require('SolarCoin');
 
 const loop = (accounts, instance, callback) => {
-    for(let i = 0; i < 24*4; i++) {
+    for(let i = 0; i < 1; i++) {
         accounts.forEach((account) => {
             instance.report(100, 100, {from: account});
         });
