@@ -120,8 +120,8 @@ class App extends React.Component {
   componentDidMount() {
     const { drizzle } = this.props;
     this.unsubscribe = drizzle.store.subscribe(() => {
-      console.log('update');
       const drizzleState = drizzle.store.getState();
+      console.log(drizzleState);
       if (drizzleState.drizzleStatus.initialized) {
         this.setState({ loading: false, drizzleState });
       }

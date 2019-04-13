@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Button, Typography } from "@material-ui/core";
+import { Button } from "@material-ui/core";
 
 export default class Stopwatch extends Component {
 
@@ -48,9 +48,7 @@ export default class Stopwatch extends Component {
     return (
       <div style={{margin: 'auto'}}>
         <p>
-          <Typography variant="subtitle2">
             {(runningTime*0.001).toFixed(3)} (sec/s)
-          </Typography>
         </p>
         <Button
           color = "primary"

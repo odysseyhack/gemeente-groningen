@@ -1,16 +1,13 @@
 import React from 'react';
-import { Typography } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
+import Divider from '@material-ui/core/Divider';
 import ReadString from './ReadString';
 import DataGraph from './DataGraph';
 import Stopwatch from './Stopwatch,';
-import Divider from '@material-ui/core/Divider';
 
-export default class Dashboard extends React.Component {
-  render () {
-    const { classes, drizzleState, drizzle } = this.props;
+export default function Dashboard(props) {
+    const { drizzleState, drizzle } = props;
     return (
       <Grid
         style={{flexGrow: 1}}
@@ -20,12 +17,7 @@ export default class Dashboard extends React.Component {
         alignItems='stretch'
       >
         <Grid item xs={12}>
-          <Typography variant="h4" gutterBottom component="h2">
-            Real Time Graph
-          </Typography>
-          <Typography component="div" className={classes.chartContainer}>
             <DataGraph />
-          </Typography>
         </Grid>
         <Divider />
         <Grid item xs = {10}>
@@ -49,5 +41,4 @@ export default class Dashboard extends React.Component {
         </Grid>
       </Grid>
     )
-  }
 }
