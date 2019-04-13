@@ -1,20 +1,33 @@
 const SolarCoin = artifacts.require('SolarCoin');
+const fs = require('fs');
+const TICK = 0.25;
+
+const data = JSON.parse(fs.readFileSync('production.json'));
+
+console.log(data);
 
 const loop = (accounts, instance, callback) => {
-    for(let i = 0; i < 1; i++) {
-        accounts.forEach((account) => {
-            instance.report(100, 100, {from: account});
-        });
+    setTimeout(callback, 96*TICK*1000);
+    for(let i = 0; i < 96; i += 1) {
+        setTimeout(() => {
+            console.log(`Data ${data[i]}`);
+            accounts.forEach((account) => {
+                instance.report(parseInt(data[i], 10), 100, {from: account});
+            });
+        }, (i + 1)*TICK*1000);
     }
-    callback();
-}
+};
 
-module.exports = async (callback) => {
-    let accounts = await web3.eth.getAccounts();
-    console.log(accounts);
-    let instance = await SolarCoin.deployed();
-    loop(accounts, instance, async () => {
-        let balance = await instance.getMyBalance.call({from: accounts[0]});
-        console.log(balance.toNumber());
+module.exports = (callback) => {
+    web3.eth.getAccounts().then((accounts) => {
+        SolarCoin.deployed().then((instance) => {
+            console.log("STARTING");
+            loop(accounts, instance, () => {
+                instance.getMyBalance.call({from: accounts[0]}).then((balance) => {
+                    console.log(balance.toNumber());
+                    callback();
+                });
+            });
+        });
     });
 }
