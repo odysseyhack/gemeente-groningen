@@ -17,21 +17,34 @@ contract SolarCoin {
     owner = msg.sender;
   }
 
-  function report(uint _generated, uint _consumed) public returns(uint amount){
-    uint length = stats[msg.sender].length;
+  modifier isAdmin() {
+    require(msg.sender == owner);
+    _;
+  }
+
+  function update(address _user, uint _generated, uint _consumed) private returns(uint amount) {
+    uint length = stats[user].length;
 
     if (length > 0) {
-      totalGenerated -= stats[msg.sender][length - 1].generated;
-      totalConsumed -= stats[msg.sender][length - 1].consumed;
+      totalGenerated -= stats[user][length - 1].generated;
+      totalConsumed -= stats[user][length - 1].consumed;
     }
 
-    stats[msg.sender].push(userStatistics(_generated, _consumed));
+    stats[user].push(userStatistics(_generated, _consumed));
 
     totalGenerated += _generated;
     totalConsumed += _consumed;
 
-    balances[msg.sender] += 100;
+    balances[user] += 100;
     return 100;
+  }
+
+  function adminReport(address _user, uint _generated, uint _consumed) public isAdmin returns(uint amount){
+    return update(_user, _generated, _consumed);
+  }
+
+  function report(uint _generated, uint _consumed) public returns(uint amount){
+    return update(msg.sender, _generated, _consumed);
   }
 
   function sendCoin(address receiver, uint amount) public returns(bool sufficient) {
