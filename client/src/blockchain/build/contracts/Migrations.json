@@ -1445,6 +1445,7 @@
       "address": "0x7A0403688893351200f3218B0231a3c3C1262e81",
       "transactionHash": "0xc23ea35b9cea0a287ce94a06bdb1f14b2f14339ec49ee59164581232b057fe8c"
     },
+<<<<<<< Updated upstream
     "1555176763648": {
       "events": {},
       "links": {},
@@ -1472,6 +1473,17 @@
   },
   "schemaVersion": "3.0.6",
   "updatedAt": "2019-04-13T18:53:58.255Z",
+=======
+    "1555181492840": {
+      "events": {},
+      "links": {},
+      "address": "0xBFDC0a8Ec8508C63b0612a71496613D2ddEa136C",
+      "transactionHash": "0x6338a7cbc20fa0335e8fcf3e9f23a5cf5f991306d0af57fbfb0ba0720d1579ab"
+    }
+  },
+  "schemaVersion": "3.0.6",
+  "updatedAt": "2019-04-13T18:52:04.590Z",
+>>>>>>> Stashed changes
   "devdoc": {
     "methods": {}
   },

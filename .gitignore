@@ -1,2 +1,6 @@
 
 client/\.idea/
+
+client/src/blockchain/build/contracts/
+
+\.idea/
