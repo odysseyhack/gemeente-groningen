@@ -1,7 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
+import App from './components/App';
 import { Drizzle, generateStore } from "drizzle";
 import { DrizzleContext } from "drizzle-react";
 import SolarCoin from "./blockchain/build/contracts/SolarCoin.json";
