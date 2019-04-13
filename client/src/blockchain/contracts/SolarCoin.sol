@@ -24,6 +24,7 @@ contract SolarCoin {
 
   modifier hasHistory(uint delta) {
     require(delta < stats[msg.sender].length, "No History that Far!");
+    _;
   }
 
   function update(address _user, uint _generated, uint _consumed) private returns(uint amount) {
@@ -39,9 +40,9 @@ contract SolarCoin {
     totalGenerated += _generated;
     totalConsumed += _consumed;
 
-    int awardedCoins = _generated - _consumed;
+    int awardedCoins = int(_generated) - int(_consumed);
     if (awardedCoins > 0) {
-      balances[_user] += awardedCoins;
+      balances[_user] += uint(awardedCoins);
     }
     return 100;
   }
@@ -69,11 +70,11 @@ contract SolarCoin {
     return totalGenerated;
   }
 
-  function getGenerated(uint delta) public view hasHistory returns(uint) {
+  function getGenerated(uint delta) public view hasHistory(delta) returns(uint) {
     return stats[msg.sender][stats[msg.sender].length - (delta + 1)].generated;
   }
 
-  function getConsumed(uint delta) public view hasHistory returns(uint) {
+  function getConsumed(uint delta) public view hasHistory(delta) returns(uint) {
     return stats[msg.sender][stats[msg.sender].length - (delta + 1)].consumed;
   }
 
