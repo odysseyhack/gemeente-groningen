@@ -13,6 +13,8 @@ import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
 import List from "@material-ui/core/List";
 import {ListItem} from "@material-ui/core";
+import Select from "@material-ui/core/Select";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const production = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6.275, 6.275, 6.275,
     6.275, 73.175, 73.175, 73.175, 73.175, 139.7525, 139.7525, 139.7525, 139.7525, 231.2675, 231.2675, 231.2675,
@@ -27,8 +29,20 @@ const oldConsumption = [130,129,141,135,165,144,137,136,120,134,137,173,135,131,
     122,24,24,82,195,178,79,103,89,83,105,120,116,65,66,94,133,104,92,120,98,88,81,176,186,181,178,78,150,75,182,127,
     119,3,4,4,3];
 
+const hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
+
 export default class Dashboard extends Component {
-    state = {bestIndex: 0, balance : 0, graph:[], consumption: oldConsumption, production: production};
+    state = {
+        bestIndex: 0,
+        balance : 0,
+        graph:[],
+        consumption: oldConsumption,
+        production: production,
+        hours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
+        h1: 9,
+        h2: 11,
+        h3: 13,
+    };
 
     buyTicket = () => {
         const temp = this.state.balance - 2000;
@@ -37,6 +51,11 @@ export default class Dashboard extends Component {
         } else {
             alert('Insufficient funds');
         }
+    };
+
+    handleChange = event => {
+        console.log(event.target.value);
+        this.setState({ [event.target.name]: event.target.value });
     };
 
     calcCoin = () => {
@@ -77,6 +96,12 @@ export default class Dashboard extends Component {
         this.setState({graph:obj}, () => this.calcCoin());
     }
 
+    generateHours = () => {
+        return hours.map(row => (
+            <MenuItem value={row}>{row}</MenuItem>
+        ));
+    };
+
     render () {
         return (
             <Grid
@@ -98,8 +123,8 @@ export default class Dashboard extends Component {
                             <CartesianGrid vertical={false} strokeDasharray="2 2" />
                             <Legend padding={5}/>
                             <Tooltip />
-                            <Line type="monotone" dataKey="Consumption" stroke="#82ca9d" />
-                            <Line type="monotone" dataKey="Production" stroke="#8884d8" activeDot={{ r: 8 }} />
+                            <Line type="monotone" dataKey="Consumption" stroke="#FF0000" />
+                            <Line type="monotone" dataKey="Production" stroke="#00FF00" activeDot={{ r: 8 }} />
                         </LineChart>
                     </ResponsiveContainer>
                 </Grid>
@@ -117,13 +142,49 @@ export default class Dashboard extends Component {
                                 <Divider/>
                                 <List>
                                     <ListItem>
-                                        Dish Washer: <Button color='primary' variant='contained' onClick={()=>this.addValue(40,50,20)}>Start</Button>
+                                        Dish Washer -
+                                        HH:<Select
+                                            value={this.state.h1}
+                                            onChange={this.handleChange}
+                                            inputProps={{name:'h1'}}>
+                                            {this.generateHours()}
+                                        </Select>
+                                        <Button
+                                            color='primary'
+                                            variant='contained'
+                                            onClick={()=>this.addValue((this.state.h1*4),(this.state.h1*4)+8, 150)}>
+                                            Start
+                                        </Button>
                                     </ListItem>
                                     <ListItem>
-                                        Washing Machine: <Button color='primary' variant='contained' onClick={()=>this.addValue(40,50,30)}>Start</Button>
+                                        Washing Machine-
+                                        HH:<Select
+                                            value={this.state.h2}
+                                            onChange={this.handleChange}
+                                            inputProps={{name:'h2'}}>
+                                            {this.generateHours()}
+                                        </Select>
+                                        <Button
+                                            color='primary'
+                                            variant='contained'
+                                            onClick={()=>this.addValue((this.state.h2*4),(this.state.h2*4)+8,200)}>
+                                            Start
+                                        </Button>
                                     </ListItem>
                                     <ListItem>
-                                        Heating: <Button color='primary' variant='contained' onClick={()=>this.addValue(60,80,30)}>Start</Button>
+                                        Car Charging -
+                                        HH:<Select
+                                            value={this.state.h3}
+                                            onChange={this.handleChange}
+                                            inputProps={{name:'h3'}}>
+                                            {this.generateHours()}
+                                        </Select>
+                                        <Button
+                                            color='primary'
+                                            variant='contained'
+                                            onClick={()=>this.addValue((this.state.h3*4),(this.state.h3*4)+8,100)}>
+                                            Start
+                                        </Button>
                                     </ListItem>
                                 </List>
                             </Paper>
