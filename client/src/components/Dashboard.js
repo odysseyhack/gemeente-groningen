@@ -41,19 +41,14 @@ export default class Dashboard extends Component {
 
     calcCoin = () => {
         let coin = 0;
-        let bestTime = 0;
-        let bestIndex = 0;
-        this.state.graph.forEach((item, index) => {
+        this.state.graph.forEach((item) => {
             if (item.Consumption < item.Production){
-                if (item.Production - item.Consumption > bestTime) {
-                    bestTime = item.Production - item.Consumption;
-                    bestIndex = index;
-                }
-                coin += Math.round((item.Production - item.Consumption));
+                coin += item.Consumption;
+            } else {
+                coin += item.Production;
             }
         });
-        console.log(coin);
-        this.setState({balance: coin, bestIndex});
+        this.setState({balance: coin});
     };
 
     addValue = (from, to, value) => {
@@ -62,10 +57,6 @@ export default class Dashboard extends Component {
             temp[i] += value;
         }
         this.setState({consumption: temp}, () => this.renderGraph())
-    };
-
-    reset = () =>{
-        this.setState({consumption:oldConsumption}, ()=>this.renderGraph());
     };
 
     renderGraph = () => {
