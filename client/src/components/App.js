@@ -3,7 +3,7 @@ import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { CssBaseline, Drawer, AppBar, Toolbar, List, Divider, Typography,
-    IconButton, Badge, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
+    IconButton, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';

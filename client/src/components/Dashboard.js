@@ -12,7 +12,7 @@ import CartesianGrid from 'recharts/lib/cartesian/CartesianGrid';
 import Tooltip from 'recharts/lib/component/Tooltip';
 import Legend from 'recharts/lib/component/Legend';
 import List from "@material-ui/core/List";
-import {ListItem} from "@material-ui/core";
+import {ListItem, Typography} from "@material-ui/core";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
 
@@ -29,6 +29,17 @@ const oldConsumption = [130,129,141,135,165,144,137,136,120,134,137,173,135,131,
     122,24,24,82,195,178,79,103,89,83,105,120,116,65,66,94,133,104,92,120,98,88,81,176,186,181,178,78,150,75,182,127,
     119,3,4,4,3];
 
+const prediction = [0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,
+    0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,
+    71.15289306640625,301.78778076171875,605.2546997070312,806.7567138671875,1090.8017578125,1314.1534423828125,
+    1505.944580078125,1646.7532958984375,1782.7064208984375,1785.1341552734375,1857.9661865234375,1884.67138671875,
+    1867.67724609375,1809.4114990234375,1768.1400146484375,1690.4525146484375,1605.481689453125,1515.655517578125,
+    1355.4249267578125,1226.7550048828125,1003.4033203125,780.0516357421875,583.4050903320312,423.174560546875,
+    318.78192138671875,158.55136108398438,29.88138198852539,0.7485545873641968,0.7485545873641968,0.7485545873641968,
+    0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,0.7485545873641968,
+    0.7485545873641968]
+
+
 const hours = [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24];
 
 export default class Dashboard extends Component {
@@ -36,8 +47,10 @@ export default class Dashboard extends Component {
         bestIndex: 0,
         balance : 0,
         graph:[],
+        predGraph: [],
         consumption: oldConsumption,
         production: production,
+        prediction: prediction,
         hours: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23],
         h1: 9,
         h2: 11,
@@ -82,18 +95,20 @@ export default class Dashboard extends Component {
 
     renderGraph = () => {
         let obj = [];
+        let obj2 = [];
         this.state.consumption.forEach((item, index) => {
-            obj.push({Time: index*15, Consumption: item, Production: this.state.production[index]})
+            obj.push({Time: (index*15) / 60, Consumption: item, Production: this.state.production[index]})
         });
-        this.setState({graph:obj}, () => this.calcCoin());
+
+        this.state.prediction.forEach((item, index) => {
+            obj2.push({Time: (index*30) / 60, Production: item})
+        });
+        this.setState({graph:obj, predGraph: obj2}, () => this.calcCoin());
     };
 
+
     componentDidMount() {
-        let obj = [];
-        oldConsumption.forEach((item, index) => {
-            obj.push({Time: index*15, Consumption: item, Production: production[index]})
-        });
-        this.setState({graph:obj}, () => this.calcCoin());
+        this.renderGraph();
     }
 
     generateHours = () => {
@@ -106,12 +121,13 @@ export default class Dashboard extends Component {
         return (
             <Grid
                 style={{flexGrow: 1}}
-                container spacing={16}
+                container spacing={24}
                 direction='column'
                 justify='center'
                 alignItems='stretch'
             >
                 <Grid item xs={12}>
+                    <Typography variant="h4">Example Day</Typography>
                     <ResponsiveContainer width="100%" height={400}>
                         <LineChart
                             data = {this.state.graph}
@@ -208,6 +224,24 @@ export default class Dashboard extends Component {
                             </Paper>
                         </Grid>
                     </Grid>
+                </Grid>
+                <Grid item xs = {12}>
+                    <Divider/>
+                    <Typography variant="h4">Next Day Power Forecast</Typography>
+                    <ResponsiveContainer width="100%" height={400}>
+                        <LineChart
+                            data = {this.state.predGraph}
+                            margin={{
+                                top: 5, right: 30, left: 20, bottom: 5,
+                            }}>
+                            <XAxis dataKey="Time" padding={5}/>
+                            <YAxis/>
+                            <CartesianGrid vertical={false} strokeDasharray="2 2" />
+                            <Legend padding={5}/>
+                            <Tooltip />
+                            <Line type="monotone" dataKey="Production" stroke="#00FF00" activeDot={{ r: 8 }} />
+                        </LineChart>
+                    </ResponsiveContainer>
                 </Grid>
             </Grid>
         )
