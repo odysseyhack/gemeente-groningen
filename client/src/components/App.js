@@ -6,9 +6,7 @@ import { CssBaseline, Drawer, AppBar, Toolbar, List, Divider, Typography,
     IconButton, Badge, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import Store from '@material-ui/icons/Store';
 import { ReactComponent as Logo } from '../Logo.svg'
 import Dashboard from './Dashboard';
 

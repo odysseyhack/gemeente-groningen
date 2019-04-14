@@ -45,10 +45,12 @@ export default class Dashboard extends Component {
             if (item.Consumption < item.Production){
                 coin += item.Consumption;
             } else {
-                coin += item.Production;
+                if (item.Production > 0)
+                    coin += item.Production;
             }
         });
-        this.setState({balance: coin});
+        console.log(coin);
+        this.setState({balance: parseInt(coin,10)});
     };
 
     addValue = (from, to, value) => {
@@ -134,9 +136,7 @@ export default class Dashboard extends Component {
                                     <ListItem>
                                         Your current balance is: {this.state.balance}
                                     </ListItem>
-                                    <ListItem>
-                                        Your peak coin earning occurred at {this.state.bestIndex}
-                                    </ListItem>
+
                                     <ListItem>
                                         Spent currency on reward:
                                         <Button variant='contained' color='secondary' onClick={() => this.buyTicket()}>
