@@ -1,21 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Drizzle } from 'drizzle';
-import './index.css';
-import Dashboard from './components/App';
-import SolarCoin from './blockchain/build/contracts/SolarCoin.json'
+import App from './components/App';
 
-const options = {
-  contracts: [SolarCoin],
-  web3: {
-    fallback: {
-      type: "ws",
-      url: "ws://127.0.0.1:7545",
-    },
-  },
-};
+ReactDOM.render(<App />, document.getElementById('root'));
 
-const drizzle = new Drizzle(options);
-
-ReactDOM.render(<Dashboard drizzle={drizzle} />, document.getElementById('root'));
 
