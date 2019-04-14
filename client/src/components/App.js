@@ -2,9 +2,15 @@ import React from 'react';
 import * as PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
-import { CssBaseline, AppBar, Toolbar, Typography }  from '@material-ui/core';
+import { CssBaseline, Drawer, AppBar, Toolbar, List, Divider, Typography,
+    IconButton, Badge, ListItemText, ListItem, ListItemIcon }  from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
+import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import NotificationsIcon from '@material-ui/icons/Notifications';
+import DashboardIcon from '@material-ui/icons/Dashboard';
+import Store from '@material-ui/icons/Store';
 import { ReactComponent as Logo } from '../Logo.svg'
-import Dashboard from "./dashboard/Dashboard";
+import Dashboard from './Dashboard';
 
 const drawerWidth = 240;
 
@@ -85,11 +91,32 @@ const styles = theme => ({
     },
 });
 
+const mainListItems = (
+    <div>
+        <ListItem button>
+            <ListItemIcon>
+                <DashboardIcon />
+            </ListItemIcon>
+            <ListItemText primary="Dashboard" />
+        </ListItem>
+    </div>
+);
+
+
 
 class App extends React.Component {
     state = {
         open: false,
     };
+
+    handleDrawerOpen = () => {
+        this.setState({ open: true });
+    };
+
+    handleDrawerClose = () => {
+        this.setState({ open: false });
+    };
+
 
     render() {
         const { classes } = this.props;
@@ -100,8 +127,19 @@ class App extends React.Component {
                 <CssBaseline />
                 <AppBar
                     position="absolute"
-                    className={classNames(classes.appBar)}>
-                    <Toolbar disableGutters={!open} className={classes.toolbar} style={{padding:2}}>
+                    className={classNames(classes.appBar, open && classes.appBarShift)}>
+                    <Toolbar disableGutters={!open} className={classes.toolbar}>
+                        <IconButton
+                            color="inherit"
+                            aria-label="Open drawer"
+                            onClick={this.handleDrawerOpen}
+                            className={classNames(
+                                classes.menuButton,
+                                open && classes.menuButtonHidden,
+                            )}
+                        >
+                            <MenuIcon />
+                        </IconButton>
                         <Logo height='5em' width='5em'/>
                         <Typography
                             component="h1"
@@ -113,6 +151,21 @@ class App extends React.Component {
                         </Typography>
                     </Toolbar>
                 </AppBar>
+                <Drawer
+                    variant="permanent"
+                    classes={{
+                        paper: classNames(classes.drawerPaper, !open && classes.drawerPaperClose),
+                    }}
+                    open={open}
+                >
+                    <div className={classes.toolbarIcon}>
+                        <IconButton onClick={this.handleDrawerClose}>
+                            <ChevronLeftIcon />
+                        </IconButton>
+                    </div>
+                    <Divider />
+                    <List>{mainListItems}</List>
+                </Drawer>
                 <main className={classes.content}>
                     <div className={classes.appBarSpacer} />
                     <Dashboard
